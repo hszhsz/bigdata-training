@@ -53,8 +53,8 @@
 				</includes>
 			</resource>
 			<resource>
-				<targetPath>${project.build.directory}/classes/com/jjs/bigdata/logbase</targetPath>
-				<directory>src/main/java/com/jjs/bigdata/logbase</directory>
+				<targetPath>${project.build.directory}/classes/com/bigdata/train/hadoop</targetPath>
+				<directory>src/main/java/com/bigdata/train/hadoop</directory>
 				<filtering>true</filtering>
 			</resource>
 		</resources>
@@ -90,6 +90,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>logbase-parser</finalName>
+		<finalName>hadoop-training</finalName>
 	</build>
 </project>
