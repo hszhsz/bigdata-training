@@ -12,9 +12,9 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
 import com.bigdata.train.hadoop.bean.UserBean;
-import com.bigdata.train.hadoop.driver.SumStepByTool.SumStepByToolMapper;
-import com.bigdata.train.hadoop.driver.SumStepByTool.SumStepByToolReducer;
-import com.bigdata.train.hadoop.driver.SumStepByTool.SumStepByToolWithCommaMapper;
+import com.bigdata.train.hadoop.mapper.MultipleInputsMapper1;
+import com.bigdata.train.hadoop.mapper.MultipleInputsMapper2;
+import com.bigdata.train.hadoop.reducer.MultipleInputsReducer;
 
 public class MultipleInputsJob extends Configured implements Tool {
 
@@ -34,13 +34,15 @@ public class MultipleInputsJob extends Configured implements Tool {
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(UserBean.class);
 
-        job.setReducerClass(SumStepByToolReducer.class);
+        job.setReducerClass(MultipleInputsReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(UserBean.class);
         job.setNumReduceTasks(3);
         
-        MultipleInputs.addInputPath(job, new Path(args[0]), TextInputFormat.class, SumStepByToolMapper.class);
-        MultipleInputs.addInputPath(job, new Path(args[1]), TextInputFormat.class, SumStepByToolWithCommaMapper.class);
+        MultipleInputs.addInputPath(job, new Path(args[0]),
+        		TextInputFormat.class, MultipleInputsMapper1.class);
+        MultipleInputs.addInputPath(job, new Path(args[1]), 
+        		TextInputFormat.class, MultipleInputsMapper2.class);
         FileOutputFormat.setOutputPath(job, new Path(args[2]));
 
         return job.waitForCompletion(true) ? 0:-1;
