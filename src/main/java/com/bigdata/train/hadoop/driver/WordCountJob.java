@@ -29,7 +29,6 @@ public class WordCountJob {
 	    try {
 		    // 构造一个Job实例job，并命名为"word count"  
 		    Job job = Job.getInstance(conf, "word count");
-			job.setJarByClass(WordCountJob.class);
 		      
 		    // 设置jar  
 		    job.setJarByClass(WordCountJob.class);  
