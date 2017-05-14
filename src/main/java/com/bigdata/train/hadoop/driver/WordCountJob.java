@@ -3,6 +3,7 @@ package com.bigdata.train.hadoop.driver;
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -47,8 +48,14 @@ public class WordCountJob {
 		    // 添加输入路径  
 		    FileInputFormat.addInputPath(job, new Path(args[0]));
 		    
+		    Path outPath = new Path(args[1]); 
+		    
+	        FileSystem fs = FileSystem.get(conf);
+	        if(fs.exists(outPath)) {
+	            fs.delete(outPath, true);
+	        }
 		    // 添加输出路径  
-		    FileOutputFormat.setOutputPath(job, new Path(args[1]));
+		    FileOutputFormat.setOutputPath(job, outPath);
 		    
 		    // 等待作业job运行完成并退出  
 		    System.exit(job.waitForCompletion(true) ? 0 : 1);

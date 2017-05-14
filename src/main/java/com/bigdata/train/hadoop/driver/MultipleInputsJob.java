@@ -2,6 +2,7 @@ package com.bigdata.train.hadoop.driver;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -43,7 +44,15 @@ public class MultipleInputsJob extends Configured implements Tool {
         		TextInputFormat.class, MultipleInputsMapper1.class);
         MultipleInputs.addInputPath(job, new Path(args[1]), 
         		TextInputFormat.class, MultipleInputsMapper2.class);
-        FileOutputFormat.setOutputPath(job, new Path(args[2]));
+        
+        Path outPath = new Path(args[2]);
+        
+        FileSystem fs = FileSystem.get(config);
+        if(fs.exists(outPath)) {
+            fs.delete(outPath, true);
+        }
+        
+        FileOutputFormat.setOutputPath(job, outPath);
 
         return job.waitForCompletion(true) ? 0:-1;
 	}
